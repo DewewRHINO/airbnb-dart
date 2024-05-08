@@ -19,6 +19,16 @@ void main() {
     final checkoutInput = (querySelector('#checkout') as InputElement).value!;
     final adultsInput = (querySelector('#adults') as InputElement).value!;
 
+   // Get the current date and parse the input dates
+    var now = DateTime.now();
+    var checkinDate = DateTime.parse(checkinInput);
+    var checkoutDate = DateTime.parse(checkoutInput);
+
+    // Check if the input dates are before the current date
+    if (checkinDate.isBefore(now) || checkoutDate.isBefore(now)) {
+      window.alert('Please enter a future date.');
+      return;
+    }
 
     // Prepare the API request options
     final params = {

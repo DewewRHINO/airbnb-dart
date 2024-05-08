@@ -5,8 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89cee494-fcb4-4df2-bc1c-48cd9de3f961" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/airbnb-clone.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/airbnb-clone.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/quickstart/web/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/quickstart/web/main.dart" afterDir="false" />
     </list>
