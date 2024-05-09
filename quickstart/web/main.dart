@@ -63,3 +63,53 @@ void main() {
     }
   });
 }
+
+
+void displayResults(dynamic data) {
+  final output = querySelector('#output')!;
+  output.innerHtml = ''; // Clear any previous results.
+
+  // Check if 'data' is a Map and contains the 'results' key
+  if (data is Map<String, dynamic> && data.containsKey('results')) {
+    var results = data['results'];
+    if (results is List<dynamic>) {
+      for (var result in results) {
+        if (result is Map<String, dynamic>) {
+          // Define a custom NodeValidator that allows certain tags and attributes.
+          var validator = NodeValidatorBuilder()
+            ..allowHtml5()
+            ..allowElement('a', attributes: ['href'])
+            ..allowElement('img', attributes: ['src', 'alt', 'width']);
+
+          // Creating the HTML elements for the response, then adding them to the page.
+          var resultDiv = DivElement()
+            ..classes.add('result')
+            ..setInnerHtml('''
+              <img src="${result['images'][0]}" alt="Property Image">
+              <div class="container">
+                <h4><b>${result['name']}</b></h4>
+                <p>${result['type']} - ${result['city']}</p>
+                <p>Persons: ${result['persons']}, Bedrooms: ${result['bedrooms']}, Bathrooms: ${result['bathrooms']}</p>
+                <p>Rating: ${result['rating'] ?? 'No rating available'}, Reviews: ${result['reviewsCount']}</p>
+                <a href="${result['url']}" target="_blank">View on Airbnb</a>
+                <p>Price per night: ${result['price']['rate']} ${result['price']['currency']}</p>
+            ''', treeSanitizer: NodeTreeSanitizer.trusted);
+
+          // Append the resultDiv to the output
+          output.children.add(resultDiv);
+        }
+      }
+    } else {
+      // If 'results' is not a list, handle appropriately (e.g., display an error or a message)
+      print('Expected a list of results, but got something else.');
+    }
+  } else {
+    // If the expected key ('results') is not found in the data, handle appropriately
+    print('Results key not found in the data');
+  }
+}
+
+void handleError(dynamic e) {
+  // This function would need to handle errors
+  window.alert('An error occurred: $e');
+}
