@@ -1,12 +1,14 @@
 import 'dart:html';
 import 'dart:convert';
 import 'dart:async';
+import 'dart:math';
 import 'package:http/http.dart' as http;
 
 
 void main() {
   querySelector('#title')!.text = 'Airbnb Clone Using Dart';
   final form = querySelector('#searchForm') as FormElement;
+  final selector =
 
   form.onSubmit.listen((Event event) async {
 
@@ -62,6 +64,8 @@ void main() {
       handleError(e);
     }
   });
+
+
 }
 
 
@@ -73,6 +77,21 @@ void displayResults(dynamic data) {
   if (data is Map<String, dynamic> && data.containsKey('results')) {
     var results = data['results'];
     if (results is List<dynamic>) {
+
+      // Add randomizing button
+      var randomButton = DivElement()
+        ..classes.add('button')
+        ..setInnerHtml('''
+        <button type="button"> Choose a random listing </button>
+        ''');
+
+      //Make list of listings:
+      var listings = [];
+
+      //Add listing button
+      output.children.add(randomButton);
+
+      //Add each listing found
       for (var result in results) {
         if (result is Map<String, dynamic>) {
           // Define a custom NodeValidator that allows certain tags and attributes.
@@ -97,8 +116,20 @@ void displayResults(dynamic data) {
 
           // Append the resultDiv to the output
           output.children.add(resultDiv);
+          listings.add(resultDiv);
         }
       }
+
+      //Check button after each result is output
+      randomButton.onClick.listen((Event event) async {
+        Random random = new Random();
+        var randomListing = listings[random.nextInt(listings.length)];
+
+        output.innerHtml = ''; // Clear any previous results.
+        output.children.add(randomButton); //Re-add the randomizing button
+        output.children.add(randomListing); // Add the random listing
+      });
+
     } else {
       // If 'results' is not a list, handle appropriately (e.g., display an error or a message)
       print('Expected a list of results, but got something else.');
@@ -108,6 +139,7 @@ void displayResults(dynamic data) {
     print('Results key not found in the data');
   }
 }
+
 
 void handleError(dynamic e) {
   // This function would need to handle errors
